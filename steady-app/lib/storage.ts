@@ -5,6 +5,9 @@ import {
   ParentingApproach,
   HistoryEvent,
   SubscriptionState,
+  HistorySummary,
+  Situation,
+  OutcomeRating,
 } from './types'
 
 const STORAGE_KEY = 'steady-app-state'
@@ -161,4 +164,49 @@ export function formatTimestamp(isoString: string): string {
     day: 'numeric',
     month: 'short',
   })
+}
+
+// History summary - derives facts from history for the rules engine
+// Pure function: reads history, returns aggregated data, no side effects
+const ALL_SITUATIONS: Situation[] = ['tantrum', 'refusing', 'bedtime', 'sibling', 'transition']
+
+export function getHistorySummary(): HistorySummary {
+  const history = getHistory()
+  const now = new Date()
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+
+  // Initialize empty records for all situations
+  const lastShownBySituation: Record<Situation, Date | null> = {
+    tantrum: null, refusing: null, bedtime: null, sibling: null, transition: null,
+  }
+  const shownCountLast7DaysBySituation: Record<Situation, number> = {
+    tantrum: 0, refusing: 0, bedtime: 0, sibling: 0, transition: 0,
+  }
+  const lastOutcomeRatingBySituation: Record<Situation, OutcomeRating | null> = {
+    tantrum: null, refusing: null, bedtime: null, sibling: null, transition: null,
+  }
+
+  // Single pass through history to compute all aggregations
+  for (const event of history) {
+    const situation = event.situation
+    const eventDate = new Date(event.timestamp)
+
+    // Track most recent occurrence per situation
+    if (!lastShownBySituation[situation] || eventDate > lastShownBySituation[situation]) {
+      lastShownBySituation[situation] = eventDate
+      // Also track the outcome of the most recent occurrence
+      lastOutcomeRatingBySituation[situation] = event.outcome
+    }
+
+    // Count occurrences in last 7 days
+    if (eventDate >= sevenDaysAgo) {
+      shownCountLast7DaysBySituation[situation]++
+    }
+  }
+
+  return {
+    lastShownBySituation,
+    shownCountLast7DaysBySituation,
+    lastOutcomeRatingBySituation,
+  }
 }

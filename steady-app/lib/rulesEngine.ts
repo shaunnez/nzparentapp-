@@ -6,6 +6,7 @@ import {
   DecisionOutput,
   DEFAULT_RULES_CONFIG,
   RulesEngineConfig,
+  HistorySummary,
 } from './types'
 
 // The rules engine configuration - can be adjusted
@@ -209,12 +210,62 @@ function getContextModifiers(context: ContextFactor[]): string[] {
   return modifiers
 }
 
+// History-based adjustments - returns light modifiers, not full rewrites
+// Keeps the engine deterministic: same inputs always produce same outputs
+interface HistoryAdjustments {
+  prependStep: string | null      // Step to add at beginning if last attempt didn't work
+  appendStep: string | null       // Supportive message if situation is recurring
+  shouldRotateFirstStep: boolean  // Avoid exact repetition within 48 hours
+}
+
+function getHistoryAdjustments(
+  situation: Situation,
+  historySummary: HistorySummary | undefined
+): HistoryAdjustments {
+  const result: HistoryAdjustments = {
+    prependStep: null,
+    appendStep: null,
+    shouldRotateFirstStep: false,
+  }
+
+  if (!historySummary) return result
+
+  const lastShown = historySummary.lastShownBySituation[situation]
+  const lastOutcome = historySummary.lastOutcomeRatingBySituation[situation]
+  const countLast7Days = historySummary.shownCountLast7DaysBySituation[situation]
+
+  // If last attempt for this situation didn't work, suggest a reset first
+  // Helps parents feel supported rather than stuck repeating the same thing
+  if (lastOutcome === 'didnt') {
+    result.prependStep = 'Try a calm reset first—take a breath, then begin fresh.'
+  }
+
+  // If same situation shown within 48 hours, rotate to avoid exact repetition
+  // Parents trust varied guidance more than identical repeats
+  if (lastShown) {
+    const hoursSinceLastShown = (Date.now() - lastShown.getTime()) / (1000 * 60 * 60)
+    if (hoursSinceLastShown < 48) {
+      result.shouldRotateFirstStep = true
+    }
+  }
+
+  // If situation appears 3+ times in 7 days, add normalization
+  // Reassures parents that repeated challenges are normal, not failure
+  if (countLast7Days >= 3) {
+    result.appendStep = 'This is a pattern—that\'s normal. Consistency over time is what matters.'
+  }
+
+  return result
+}
+
 // Main rules engine function
+// historySummary is optional - when omitted, behavior is identical to original
 export function generateDecision(
   situation: Situation,
   approach: ParentingApproach,
   temperament: Temperament,
-  context: ContextFactor[]
+  context: ContextFactor[],
+  historySummary?: HistorySummary
 ): DecisionOutput {
   // Get base guidance for the approach
   const baseGuidance = approach === 'connect-redirect'
@@ -225,8 +276,17 @@ export function generateDecision(
   const tempModifiers = getTemperamentModifiers(temperament)
   const contextModifiers = getContextModifiers(context)
 
+  // Get history-based adjustments (returns empty adjustments if no history)
+  const historyAdjustments = getHistoryAdjustments(situation, historySummary)
+
   // Combine steps - add most relevant modifier to the steps
-  const doThisNow = [...baseGuidance.doThisNow]
+  let doThisNow = [...baseGuidance.doThisNow]
+
+  // If recent repetition, rotate first two steps to provide variety
+  // This keeps guidance fresh without changing the underlying advice
+  if (historyAdjustments.shouldRotateFirstStep && doThisNow.length >= 2) {
+    doThisNow = [doThisNow[1], doThisNow[0], ...doThisNow.slice(2)]
+  }
 
   // Add the most relevant modifier as an additional step if there are any
   const allModifiers = [...contextModifiers, ...tempModifiers]
@@ -235,8 +295,19 @@ export function generateDecision(
     doThisNow.push(allModifiers[0])
   }
 
-  // Limit to 3-4 steps
-  const finalSteps = doThisNow.slice(0, 4)
+  // If last attempt didn't work, prepend a reset step
+  if (historyAdjustments.prependStep) {
+    doThisNow = [historyAdjustments.prependStep, ...doThisNow]
+  }
+
+  // If recurring situation, append supportive normalization
+  if (historyAdjustments.appendStep) {
+    doThisNow.push(historyAdjustments.appendStep)
+  }
+
+  // Limit to 3-4 steps (or 5 if history added extra context)
+  const maxSteps = historyAdjustments.prependStep || historyAdjustments.appendStep ? 5 : 4
+  const finalSteps = doThisNow.slice(0, maxSteps)
 
   // Combine avoid items - add context-specific avoidance if in public
   const avoidThis = [...baseGuidance.avoidThis]
