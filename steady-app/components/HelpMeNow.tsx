@@ -16,7 +16,7 @@ import {
   DEFAULT_TEMPERAMENT,
 } from '@/lib/types'
 import { generateDecision } from '@/lib/rulesEngine'
-import { addHistoryEvent, generateEventId } from '@/lib/storage'
+import { addHistoryEvent, generateEventId, getHistorySummary } from '@/lib/storage'
 
 interface HelpMeNowProps {
   approach: ParentingApproach
@@ -59,11 +59,15 @@ export default function HelpMeNow({
 
     // Small delay for visual feedback
     setTimeout(() => {
+      // Get history summary for personalization (optional - engine works without it)
+      const historySummary = getHistorySummary()
+
       const result = generateDecision(
         selectedSituation,
         approach,
         temperament || DEFAULT_TEMPERAMENT,
-        activeContexts
+        activeContexts,
+        historySummary
       )
       setOutput(result)
       setIsGenerating(false)

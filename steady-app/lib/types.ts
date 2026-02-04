@@ -138,6 +138,14 @@ export const DEFAULT_APP_STATE: SteadyAppState = {
   usageCount: 0,
 }
 
+// History Summary - derived facts from user history for rules engine
+// Used for light personalization without making the engine stateful
+export interface HistorySummary {
+  lastShownBySituation: Record<Situation, Date | null>
+  shownCountLast7DaysBySituation: Record<Situation, number>
+  lastOutcomeRatingBySituation: Record<Situation, OutcomeRating | null>
+}
+
 // Rules Engine Config - for easy adjustment later
 export interface RulesEngineConfig {
   // Temperament thresholds that trigger modified responses
