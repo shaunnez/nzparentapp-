@@ -6,14 +6,14 @@ const plans = [
   {
     id: 'monthly',
     name: 'Monthly',
-    price: 15,
+    price: 7,
     period: 'month',
-    description: 'Perfect for trying Steady out',
+    description: 'Less than a coffee. Faster than scrolling.',
     features: [
-      'Unlimited guidance sessions',
-      'Full child profile customization',
-      'Complete history tracking',
-      'Both parenting approaches',
+      'Unlimited instant guidance',
+      'Expert-curated scenarios',
+      'Child profile + temperament tuning',
+      'Works offline, fully private',
       'Cancel anytime',
     ],
     cta: 'Start free trial',
@@ -22,14 +22,14 @@ const plans = [
   {
     id: 'annual',
     name: 'Annual',
-    price: 120,
+    price: 60,
     period: 'year',
-    description: 'Best value — save $60',
+    description: 'Best value — save $24',
     features: [
       'Everything in Monthly',
       '2 months free',
       'Priority support',
-      'Early access to new features',
+      'Early access to new scenarios',
       'Lock in current price',
     ],
     cta: 'Start free trial',
@@ -47,10 +47,10 @@ export default function PricingPage() {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              Simple, transparent pricing
+              Fast, reliable help — without AI pricing.
             </h1>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Start with a free trial. No credit card required. Cancel anytime.
+              Because Steady runs on expert-curated guidance, not AI servers, it&apos;s faster, more private, and affordable.
             </p>
           </div>
 
@@ -86,7 +86,7 @@ export default function PricingPage() {
                     <span className="text-slate-500">NZD/{plan.period}</span>
                   </div>
                   {plan.id === 'annual' && (
-                    <p className="text-sm text-primary-600 mt-1">That&apos;s just $10/month</p>
+                    <p className="text-sm text-primary-600 mt-1">That&apos;s just $5/month</p>
                   )}
                 </div>
 
@@ -132,15 +132,19 @@ export default function PricingPage() {
             <div className="max-w-2xl mx-auto space-y-4 text-sm text-slate-600">
               <p>
                 <strong className="text-slate-800">How does the free trial work?</strong>{' '}
-                You get 3 free guidance sessions to try Steady. No payment info required.
+                You get 3 real guidance sessions — enough to use Steady in actual hard moments. No payment info required.
+              </p>
+              <p>
+                <strong className="text-slate-800">Why is Steady cheaper?</strong>{' '}
+                Because guidance is curated and stored on your device, there are no ongoing AI usage costs.
               </p>
               <p>
                 <strong className="text-slate-800">Can I cancel anytime?</strong>{' '}
-                Yes! Cancel with one click. No questions asked.
+                Yes! Cancel with one click.
               </p>
               <p>
                 <strong className="text-slate-800">Is my data safe?</strong>{' '}
-                Your child&apos;s profile stays on your device. We don&apos;t store personal information on our servers.
+                Your child&apos;s profile stays on your device. No data sent anywhere.
               </p>
             </div>
           </div>
