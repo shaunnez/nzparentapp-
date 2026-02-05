@@ -88,6 +88,23 @@ export const CONTEXT_FACTORS: ContextInfo[] = [
   { id: 'public', label: 'Public place' },
 ]
 
+// What Worked Tracking - Context tags for outcome capture
+export type OutcomeContext = 'tired' | 'hungry' | 'rushed' | 'public' | 'bedtime' | 'transition'
+
+export interface OutcomeContextInfo {
+  id: OutcomeContext
+  label: string
+}
+
+export const OUTCOME_CONTEXTS: OutcomeContextInfo[] = [
+  { id: 'tired', label: 'Tired' },
+  { id: 'hungry', label: 'Hungry' },
+  { id: 'rushed', label: 'Rushed' },
+  { id: 'public', label: 'Public' },
+  { id: 'bedtime', label: 'Bedtime' },
+  { id: 'transition', label: 'Transition' },
+]
+
 // Decision Output Types
 export interface DecisionOutput {
   doThisNow: string[] // 1-3 numbered steps
@@ -97,6 +114,21 @@ export interface DecisionOutput {
 
 // Outcome Types
 export type OutcomeRating = 'worked' | 'somewhat' | 'didnt'
+
+// What Worked Tracking - Outcome tracking
+export type OutcomeType = 'SUCCESS' | 'NOT_SUCCESS' | 'UNKNOWN'
+
+export interface InteractionOutcome {
+  id: string
+  userId: string // For future multi-user support; currently uses 'default'
+  childId: string | null // For future multi-child support; currently nullable
+  approachId: ParentingApproach
+  situationId: Situation
+  timestamp: string // ISO timestamp
+  outcome: OutcomeType
+  contexts: OutcomeContext[]
+  notes?: string // Optional, max 240 chars
+}
 
 // Event History Types
 export interface HistoryEvent {
@@ -109,6 +141,7 @@ export interface HistoryEvent {
   outcome: OutcomeRating
   childAge: number
   temperament: Temperament
+  outcomeRecorded?: boolean // Track if outcome was captured via new system
 }
 
 // Subscription Types
@@ -124,6 +157,7 @@ export interface SteadyAppState {
   childProfile: ChildProfile | null
   approach: ParentingApproach
   history: HistoryEvent[]
+  outcomes: InteractionOutcome[] // What Worked tracking
   subscription: SubscriptionState
   usageCount: number // Free usage counter
 }
@@ -132,6 +166,7 @@ export const DEFAULT_APP_STATE: SteadyAppState = {
   childProfile: null,
   approach: 'connect-redirect',
   history: [],
+  outcomes: [],
   subscription: {
     isSubscribed: false,
   },
@@ -161,4 +196,32 @@ export const DEFAULT_RULES_CONFIG: RulesEngineConfig = {
   highPersistenceThreshold: 7,
   highSensitivityThreshold: 7,
   temperamentWeight: 0.5, // 50% influence - can be adjusted
+}
+
+// What Worked Tracking - Insights Types
+export interface ApproachInsights {
+  approachId: ParentingApproach
+  situationId?: Situation // If undefined, insights are across all situations
+  totalUses: number
+  totalSuccesses: number
+  totalFailures: number
+  successRate: number // 0-1, excludes UNKNOWN outcomes
+  ratedCount: number // Count of SUCCESS + NOT_SUCCESS (excludes UNKNOWN)
+  lastUsed: string | null // ISO timestamp
+  patterns: InsightPattern[]
+  statement: string | null // Primary statement to display
+}
+
+export interface InsightPattern {
+  context: OutcomeContext
+  successRate: number
+  sampleSize: number
+  statement: string // e.g., "Works better when tired"
+  isSignificant: boolean // Meets thresholds for display
+}
+
+export interface DashboardInsightsSummary {
+  topApproach: ApproachInsights | null
+  totalTracked: number
+  hasMinimumData: boolean // At least 3 rated outcomes
 }

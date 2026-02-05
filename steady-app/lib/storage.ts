@@ -8,6 +8,9 @@ import {
   HistorySummary,
   Situation,
   OutcomeRating,
+  InteractionOutcome,
+  OutcomeType,
+  OutcomeContext,
 } from './types'
 
 const STORAGE_KEY = 'steady-app-state'
@@ -209,4 +212,92 @@ export function getHistorySummary(): HistorySummary {
     shownCountLast7DaysBySituation,
     lastOutcomeRatingBySituation,
   }
+}
+
+// ============================================================================
+// What Worked Tracking - Outcome helpers
+// ============================================================================
+
+// Get all outcomes
+export function getOutcomes(): InteractionOutcome[] {
+  return getAppState().outcomes
+}
+
+// Add a new outcome
+export function addOutcome(outcome: InteractionOutcome): void {
+  const state = getAppState()
+  // Add to beginning, keep only last 200 outcomes
+  state.outcomes = [outcome, ...state.outcomes].slice(0, 200)
+  saveAppState(state)
+}
+
+// Generate unique ID for outcomes
+export function generateOutcomeId(): string {
+  return `outcome_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+}
+
+// Get outcomes filtered by criteria
+export interface OutcomeFilters {
+  childId?: string | null
+  approachId?: ParentingApproach
+  situationId?: Situation
+  rangeDays?: number // Get outcomes from last N days
+}
+
+export function getFilteredOutcomes(filters: OutcomeFilters = {}): InteractionOutcome[] {
+  let outcomes = getOutcomes()
+
+  // Filter by childId (for future multi-child support)
+  if (filters.childId !== undefined) {
+    outcomes = outcomes.filter(o => o.childId === filters.childId)
+  }
+
+  // Filter by approach
+  if (filters.approachId) {
+    outcomes = outcomes.filter(o => o.approachId === filters.approachId)
+  }
+
+  // Filter by situation
+  if (filters.situationId) {
+    outcomes = outcomes.filter(o => o.situationId === filters.situationId)
+  }
+
+  // Filter by date range
+  if (filters.rangeDays) {
+    const cutoffDate = new Date()
+    cutoffDate.setDate(cutoffDate.getDate() - filters.rangeDays)
+    outcomes = outcomes.filter(o => new Date(o.timestamp) >= cutoffDate)
+  }
+
+  return outcomes
+}
+
+// Update an existing outcome (e.g., to add notes)
+export function updateOutcome(outcomeId: string, updates: Partial<InteractionOutcome>): boolean {
+  const state = getAppState()
+  const index = state.outcomes.findIndex(o => o.id === outcomeId)
+
+  if (index === -1) return false
+
+  state.outcomes[index] = {
+    ...state.outcomes[index],
+    ...updates,
+    id: state.outcomes[index].id, // Preserve ID
+    timestamp: state.outcomes[index].timestamp, // Preserve timestamp
+  }
+  saveAppState(state)
+  return true
+}
+
+// Delete an outcome
+export function deleteOutcome(outcomeId: string): boolean {
+  const state = getAppState()
+  const initialLength = state.outcomes.length
+  state.outcomes = state.outcomes.filter(o => o.id !== outcomeId)
+
+  if (state.outcomes.length < initialLength) {
+    saveAppState(state)
+    return true
+  }
+  return false
 }

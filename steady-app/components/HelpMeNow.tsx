@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Card from './Card'
 import Button from './Button'
+import OutcomePrompt from './OutcomePrompt'
+import ApproachResultsPanel from './ApproachResultsPanel'
 import {
   Situation,
   ContextFactor,
@@ -16,7 +18,7 @@ import {
   DEFAULT_TEMPERAMENT,
 } from '@/lib/types'
 import { generateDecision } from '@/lib/rulesEngine'
-import { addHistoryEvent, generateEventId, getHistorySummary } from '@/lib/storage'
+import { addHistoryEvent, generateEventId, getHistorySummary, getChildProfile } from '@/lib/storage'
 
 interface HelpMeNowProps {
   approach: ParentingApproach
@@ -236,32 +238,22 @@ export default function HelpMeNow({
             <p className="text-sm text-slate-700">{output.whyThisWorks}</p>
           </div>
 
-          {/* Outcome logging */}
-          <div className="border-t border-slate-100 pt-4">
-            <p className="text-sm text-slate-600 mb-3">
-              {outcomeLogged ? 'Thanks for the feedback!' : 'How did it go?'}
-            </p>
-            <div className="flex gap-2">
-              {[
-                { value: 'worked' as OutcomeRating, label: 'Worked', color: 'bg-success-100 text-success-700 hover:bg-success-200' },
-                { value: 'somewhat' as OutcomeRating, label: 'Somewhat', color: 'bg-warning-100 text-warning-700 hover:bg-warning-200' },
-                { value: 'didnt' as OutcomeRating, label: "Didn't", color: 'bg-slate-100 text-slate-700 hover:bg-slate-200' },
-              ].map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => handleOutcome(option.value)}
-                  disabled={outcomeLogged}
-                  className={`
-                    flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200
-                    ${outcomeLogged ? 'opacity-50 cursor-not-allowed' : ''}
-                    ${option.color}
-                  `}
-                >
-                  {option.label}
-                </button>
-              ))}
+          {/* What Worked tracking - New outcome prompt */}
+          {!outcomeLogged && selectedSituation && (
+            <div className="mb-4">
+              <OutcomePrompt
+                approachId={approach}
+                situationId={selectedSituation}
+                onComplete={() => {
+                  setOutcomeLogged(true)
+                  onOutcomeLogged?.()
+                }}
+                onSkip={() => {
+                  setOutcomeLogged(true)
+                }}
+              />
             </div>
-          </div>
+          )}
 
           {/* Reset button */}
           <button
@@ -270,6 +262,17 @@ export default function HelpMeNow({
           >
             Start over with a new situation
           </button>
+
+          {/* Show results panel for this approach + situation */}
+          {selectedSituation && (
+            <div className="mt-6">
+              <ApproachResultsPanel
+                approachId={approach}
+                situationId={selectedSituation}
+                childId={getChildProfile()?.name || null}
+              />
+            </div>
+          )}
         </div>
       )}
     </Card>
