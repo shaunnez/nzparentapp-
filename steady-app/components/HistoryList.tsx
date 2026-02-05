@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Card from './Card'
 import Button from './Button'
-import { HistoryEvent, SITUATIONS, OutcomeRating } from '@/lib/types'
+import { HistoryEvent, SITUATIONS, APPROACHES, OutcomeRating } from '@/lib/types'
 import { formatTimestamp, resetHistory } from '@/lib/storage'
 
 interface HistoryListProps {
@@ -155,7 +155,7 @@ export default function HistoryList({ events, onReset }: HistoryListProps) {
 
                     {/* Approach used */}
                     <p className="text-xs text-slate-400">
-                      Approach: {event.approach === 'connect-redirect' ? 'Connect → Redirect' : 'Emotion Coaching'}
+                      Approach: {APPROACHES.find(a => a.id === event.approach)?.name ?? event.approach}
                     </p>
                   </div>
                 </div>
