@@ -5,19 +5,18 @@ import Link from 'next/link'
 // Feature card data
 const features = [
   {
-    title: 'Memory',
-    description: 'Steady remembers your child\'s temperament and what works for them, so guidance is always personalized.',
+    title: 'Instant',
+    description: 'Guidance appears immediately — no waiting, no loading, works even with bad reception.',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none">
-        <circle cx="16" cy="16" r="14" className="stroke-primary-500" strokeWidth="2" />
-        <circle cx="16" cy="12" r="4" className="fill-primary-500" />
-        <path d="M8 24c0-4 4-6 8-6s8 2 8 6" className="stroke-primary-500" strokeWidth="2" strokeLinecap="round" />
+        <path d="M16 4v24M8 12l8-8 8 8" className="stroke-primary-500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="16" cy="16" r="3" className="fill-primary-500" />
       </svg>
     ),
   },
   {
-    title: 'In-the-moment steps',
-    description: 'Get clear, numbered actions for the next 60 seconds when things get tough.',
+    title: 'Expert-curated',
+    description: 'Steps are written and reviewed by parenting professionals — not generated on the fly.',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none">
         <rect x="4" y="6" width="24" height="20" rx="3" className="stroke-primary-500" strokeWidth="2" />
@@ -26,8 +25,8 @@ const features = [
     ),
   },
   {
-    title: 'Consistency',
-    description: 'Use the same approach every time, building predictability for your child.',
+    title: 'Consistent',
+    description: 'Same situation gets the same response every time, so you stop second-guessing.',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none">
         <path d="M6 16h20" className="stroke-primary-500" strokeWidth="2" strokeLinecap="round" />
@@ -38,14 +37,13 @@ const features = [
     ),
   },
   {
-    title: 'Co-parent friendly',
-    description: 'Share the same profile and approach, so everyone responds the same way.',
+    title: 'Private',
+    description: 'Everything stays on your device. No accounts. No data sent anywhere.',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none">
-        <circle cx="11" cy="10" r="4" className="stroke-primary-500" strokeWidth="2" />
-        <circle cx="21" cy="10" r="4" className="stroke-primary-500" strokeWidth="2" />
-        <path d="M4 24c0-4 3-6 7-6s7 2 7 6" className="stroke-primary-500" strokeWidth="2" strokeLinecap="round" />
-        <path d="M14 24c0-4 3-6 7-6s7 2 7 6" className="stroke-primary-500" strokeWidth="2" strokeLinecap="round" />
+        <rect x="8" y="14" width="16" height="12" rx="2" className="stroke-primary-500" strokeWidth="2" />
+        <path d="M12 14V10c0-2.2 1.8-4 4-4s4 1.8 4 4v4" className="stroke-primary-500" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="16" cy="20" r="2" className="fill-primary-500" />
       </svg>
     ),
   },
@@ -63,15 +61,19 @@ export default function LandingPage() {
             <div className="text-center max-w-3xl mx-auto">
               {/* Hero headline */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-                A calm, consistent{' '}
-                <span className="gradient-text">third adult</span>{' '}
-                in your household.
+                Expert parenting advice{' '}
+                <span className="gradient-text">in 3 seconds.</span>
               </h1>
 
               {/* Subtext */}
               <p className="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed">
-                In-the-moment guidance that remembers your child and keeps your approach consistent—
-                even when you&apos;re exhausted.
+                When your child is melting down, you don&apos;t have time to wait or scroll.
+                Get instant, evidence-based steps tailored to your child — no internet required.
+              </p>
+
+              {/* Qualifier */}
+              <p className="mt-4 text-base text-slate-500">
+                Curated by parenting experts. Stored on your device. Same situation = same proven steps.
               </p>
 
               {/* CTAs */}
@@ -80,19 +82,19 @@ export default function LandingPage() {
                   href="/app"
                   className="btn-accent text-base px-8 py-4 w-full sm:w-auto"
                 >
-                  Try the prototype
+                  Help me now
                 </Link>
                 <Link
                   href="/pricing"
                   className="btn-secondary text-base px-8 py-4 w-full sm:w-auto"
                 >
-                  View pricing
+                  See pricing
                 </Link>
               </div>
 
               {/* Trust badge */}
               <p className="mt-8 text-sm text-slate-500">
-                No sign-up required to try. Your data stays on your device.
+                No sign-up required to try. Works offline. Your data stays on your device.
               </p>
             </div>
           </div>
@@ -103,10 +105,11 @@ export default function LandingPage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">
-                Parenting support that actually helps
+                When you&apos;re stressed, decision-making is the problem.
               </h2>
               <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-                When you&apos;re in the thick of it, you don&apos;t need theory—you need the next step.
+                When emotions are high, even good parents escalate.
+                Steady removes the guesswork by telling you exactly what to do next — before things get worse.
               </p>
             </div>
 
