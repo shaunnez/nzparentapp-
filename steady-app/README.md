@@ -17,7 +17,7 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Features
 
 - **Child Profile**: Store your child's name, age, and temperament (reactivity, persistence, sensitivity)
-- **Parenting Approaches**: Choose between "Connect → Redirect" or "Emotion Coaching + Boundaries"
+- **Parenting Approaches**: Choose between "Connection Before Direction" or "Calm Feelings + Clear Limits"
 - **In-the-moment Guidance**: Get specific, actionable steps for common challenging situations
 - **Context-aware**: Toggle factors like "tired", "hungry", "overstimulated", or "public place"
 - **History Tracking**: Log outcomes and review what worked
@@ -62,7 +62,7 @@ The rules engine (`lib/rulesEngine.ts`) generates guidance based on:
 
 ### Inputs
 1. **Situation**: tantrum, refusing instructions, bedtime battle, sibling conflict, or transition trouble
-2. **Approach**: "Connect → Redirect" or "Emotion Coaching + Boundaries"
+2. **Approach**: "Connection Before Direction" or "Calm Feelings + Clear Limits"
 3. **Temperament**: Three 0-10 sliders (reactivity, persistence, sensitivity)
 4. **Context**: Optional toggles (tired, hungry, overstimulated, public place)
 
@@ -108,11 +108,11 @@ No data is sent to any server.
 
 ## Parenting Approaches
 
-### Connect → Redirect (Right brain → Left brain)
-Based on Dan Siegel's work. The idea is to first connect emotionally with your child (engaging the right brain), then redirect behavior once they feel heard (engaging the left brain). Focuses on co-regulation before problem-solving.
+### Connection Before Direction
+Based on Dan Siegel's work. When kids are upset or resisting, their ability to listen and cooperate drops. Start by helping them feel calm and understood, then guide behaviour once they're more regulated. Prioritise co-regulation and clear follow-through over quick compliance.
 
-### Emotion Coaching + Boundaries
-Based on John Gottman's research. The approach names and validates emotions while maintaining clear, consistent boundaries. Helps children understand their feelings without giving in to inappropriate behavior.
+### Calm Feelings + Clear Limits
+Based on John Gottman's research. Name and validate the feeling, while keeping the limit steady. Help your child put words to what's going on without giving in to inappropriate behaviour. Warmth and empathy stay high; boundaries stay clear and consistent.
 
 ## Tech Stack
 

@@ -40,7 +40,7 @@ interface BaseGuidance {
   whyThisWorks: string
 }
 
-// Connect → Redirect approach guidance
+// Connection Before Direction approach guidance
 const connectRedirectBase: Record<Situation, BaseGuidance> = {
   tantrum: {
     doThisNow: [
@@ -104,7 +104,7 @@ const connectRedirectBase: Record<Situation, BaseGuidance> = {
   },
 }
 
-// Emotion Coaching approach guidance
+// Calm Feelings + Clear Limits approach guidance
 const emotionCoachingBase: Record<Situation, BaseGuidance> = {
   tantrum: {
     doThisNow: [

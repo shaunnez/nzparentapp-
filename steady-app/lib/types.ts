@@ -39,15 +39,15 @@ export interface ApproachInfo {
 export const APPROACHES: ApproachInfo[] = [
   {
     id: 'connect-redirect',
-    name: 'Connect → Redirect',
-    shortName: 'Connect first',
-    description: 'Start by connecting with your child emotionally (right brain), then redirect behavior once they feel heard (left brain). Focus on co-regulation before problem-solving.',
+    name: 'Connection Before Direction',
+    shortName: 'Connection first',
+    description: 'When kids are upset or resisting, their ability to listen and cooperate drops. Start by helping them feel calm and understood, then guide behaviour once they\u2019re more regulated. Prioritise co-regulation and clear follow-through over quick compliance.',
   },
   {
     id: 'emotion-coaching',
-    name: 'Emotion Coaching + Boundaries',
-    shortName: 'Coach emotions',
-    description: 'Name and validate emotions while maintaining clear, consistent boundaries. Help your child understand their feelings without giving in to inappropriate behavior.',
+    name: 'Calm Feelings + Clear Limits',
+    shortName: 'Feelings + limits',
+    description: 'Name and validate the feeling, while keeping the limit steady. Help your child put words to what\u2019s going on without giving in to inappropriate behaviour. Warmth and empathy stay high; boundaries stay clear and consistent.',
   },
 ]
 
