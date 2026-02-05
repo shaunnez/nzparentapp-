@@ -8,6 +8,7 @@ import ApproachSelector from '@/components/ApproachSelector'
 import HelpMeNow from '@/components/HelpMeNow'
 import HistoryList from '@/components/HistoryList'
 import PaywallModal from '@/components/PaywallModal'
+import DashboardWhatWorkingCard from '@/components/DashboardWhatWorkingCard'
 import {
   ChildProfile,
   ParentingApproach,
@@ -134,8 +135,11 @@ export default function AppPage() {
               <ApproachSelector onApproachChange={handleApproachChange} />
             </div>
 
-            {/* Main content - Help Me Now and History */}
+            {/* Main content - What's Working, Help Me Now and History */}
             <div className="lg:col-span-8 space-y-6">
+              {/* What's Working Dashboard Card */}
+              <DashboardWhatWorkingCard childId={childProfile?.name || null} />
+
               <HelpMeNow
                 approach={approach}
                 temperament={childProfile?.temperament || DEFAULT_TEMPERAMENT}
