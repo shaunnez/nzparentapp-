@@ -25,8 +25,8 @@ const features = [
     ),
   },
   {
-    title: 'Consistent',
-    description: 'Same situation gets the same response every time, so you stop second-guessing.',
+    title: 'What worked (for your child)',
+    description: 'After each moment, tap what happened. Steady tracks your wins and misses and shows patterns — based on your usage, stored on your device.',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none">
         <path d="M6 16h20" className="stroke-primary-500" strokeWidth="2" strokeLinecap="round" />
@@ -67,13 +67,13 @@ export default function LandingPage() {
 
               {/* Subtext */}
               <p className="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed">
-                When your child is melting down, you don&apos;t have time to wait or scroll.
-                Get instant, evidence-based steps tailored to your child — no internet required.
+                Instant, expert-curated steps for the next 60 seconds — even offline.
+                Then Steady remembers what worked for your child, so the guidance gets more consistent over time.
               </p>
 
               {/* Qualifier */}
               <p className="mt-4 text-base text-slate-500">
-                Curated by parenting experts. Stored on your device. Same situation = same proven steps.
+                Private by default: your child profile and history stay on your device.
               </p>
 
               {/* CTAs */}
@@ -94,7 +94,7 @@ export default function LandingPage() {
 
               {/* Trust badge */}
               <p className="mt-8 text-sm text-slate-500">
-                No sign-up required to try. Works offline. Your data stays on your device.
+                No sign-up. Works offline. Your data stays on your device.
               </p>
             </div>
           </div>
@@ -148,18 +148,18 @@ export default function LandingPage() {
               {[
                 {
                   step: '1',
-                  title: 'Set up your child\'s profile',
-                  description: 'Tell us their age and temperament—this helps personalize the guidance.',
+                  title: 'Pick what\'s happening',
+                  description: 'Tell us their age and temperament, then choose the situation you\'re facing.',
                 },
                 {
                   step: '2',
-                  title: 'Choose your approach',
-                  description: 'Pick a parenting style that aligns with your values and stick with it.',
+                  title: 'Follow "Do this now" / "Avoid this"',
+                  description: 'Get immediate, expert-curated steps for the next 60 seconds.',
                 },
                 {
                   step: '3',
-                  title: 'Get help in the moment',
-                  description: 'When things get tough, tap a situation and get immediate, practical steps.',
+                  title: 'Tap how it went',
+                  description: 'Mark what worked, what didn\'t. Steady builds your "what worked" history — stored on your device.',
                 },
               ].map((item) => (
                 <div key={item.step} className="text-center">

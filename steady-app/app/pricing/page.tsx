@@ -10,6 +10,7 @@ const plans = [
     period: 'month',
     description: 'Less than a coffee. Faster than scrolling.',
     features: [
+      'What worked tracking + insights (based on your usage)',
       'Unlimited instant guidance',
       'Expert-curated scenarios',
       'Child profile + temperament tuning',
@@ -47,10 +48,10 @@ export default function PricingPage() {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              Fast, reliable help — without AI pricing.
+              Fast, reliable help — without server dependence.
             </h1>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Because Steady runs on expert-curated guidance, not AI servers, it&apos;s faster, more private, and affordable.
+              Instant expert-curated steps, plus &apos;what worked&apos; tracking that builds from your own usage — stored privately on your device.
             </p>
           </div>
 
@@ -144,7 +145,7 @@ export default function PricingPage() {
               </p>
               <p>
                 <strong className="text-slate-800">Is my data safe?</strong>{' '}
-                Your child&apos;s profile stays on your device. No data sent anywhere.
+                Your child&apos;s profile and your &apos;what worked&apos; history stay on your device. No data sent anywhere.
               </p>
             </div>
           </div>
